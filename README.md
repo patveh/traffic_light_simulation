@@ -3,7 +3,6 @@
 This project implements:
 
     - An implementation of a traffic light simulator,
-    - An implementation of a very simple FSM (Finite State Machine),
     - An API to an imaginary traffic light device (the simulator),
     - A Robot Framework task which is used to change the operational mode of the simulator.
 

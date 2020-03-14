@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Traffic light simulation</title>
+		<!-- <meta http-equiv="refresh" content = "1" > -->
+		<link href="../static/traffic-light.css" rel='stylesheet' media='screen'>
+		<script>
+			function start_light() {
+				const circles = document.querySelectorAll('.circle')
+				let lights = {{ mode.lights }};
+				let timers = {{ mode.on }};
+				let blink = {{ mode.blink }};
+				let i = 0;
+				let activeLight = lights[i];
+				let flip_flop = false;
+				let save;
+
+				setTimeout("location.reload(true);", {{ refresh_interval }});
+
+				var timerID = setInterval(() => {
+					changeLight();
+				}, timers[i]);
+
+				function changeLight() {
+					circles[activeLight].className = 'circle';
+
+					activeLight = lights[i];
+					clearInterval(timerID);
+					timerID = setInterval(() => {
+						changeLight();
+					}, timers[i])
+					
+					const currentLight = circles[activeLight]
+					if (blink == 1) {
+						if (flip_flop == false){
+							save = currentLight.getAttribute('color');
+							currentLight.setAttribute("color", "black");
+							flip_flop = true;
+						} else {
+							currentLight.setAttribute("color", save);
+							currentLight.classList.add(currentLight.getAttribute('color'));
+							flip_flop = false;
+						}
+					} else {
+						currentLight.classList.add(currentLight.getAttribute('color'));
+					}
+					i++;
+					
+					if(i > lights.length-1) {
+						i = 0;
+					}
+				}
+			}
+			window.onload = start_light;
+		 </script>
+	</head>
+	<body>
+		<div class="container">
+			<div id='red' class="circle" color="red"></div>
+			<div id='yellow' class="circle" color="yellow"></div>
+			<div id='green' class="circle" color="green"></div>
+		</div>
+		<!-- <form>
+		   <input type="button" onclick="start_light()" value="Click here " />
+		</form>
+		<p>to start the traffic light, refresh the page to stop it.</p> -->
+	</body>
+</html>
+
